@@ -2,7 +2,7 @@ import { LOGIN, LOGOUT } from './actionTypes'
 import type { AuthState } from './interface'
 
 export interface loginAction {
-  type: typeof LOGIN
+  type: string,
   payload: {
     user: AuthState['user']
     token: string
