@@ -1,7 +1,7 @@
 import { LOGIN, LOGOUT } from './actionTypes'
 import type { AuthState } from './interface'
 
-export interface loginAction {
+export interface LoginAction {
   type: string,
   payload: {
     user: AuthState['user']
@@ -10,17 +10,17 @@ export interface loginAction {
   }
 }
 
-export interface logoutAction {
+export interface LogoutAction {
   type: typeof LOGOUT
 }
 
-export const login = (user: AuthState['user'], token: string, refresh: string): loginAction => ({
+export const login = (user: AuthState['user'], token: string, refresh: string): LoginAction => ({
   type: LOGIN,
   payload: { user, token, refresh },
 })
 
-export const logout = (): logoutAction => ({
+export const logout = (): LogoutAction => ({
   type: LOGOUT,
 })
 
-export type AuthActionTypes = loginAction | logoutAction
+export type AuthActionTypes = LoginAction | LogoutAction

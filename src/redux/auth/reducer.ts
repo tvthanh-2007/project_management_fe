@@ -8,7 +8,7 @@ const initialState: AuthState = {
   user: null,
 }
 
-export const authReducer = (state = initialState, action: AuthActionTypes): AuthState => {
+export const AuthReducer = (state = initialState, action: AuthActionTypes): AuthState => {
   switch (action.type) {
     case LOGIN:
       return {
