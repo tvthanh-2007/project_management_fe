@@ -6,6 +6,7 @@ import {
   UserOutlined,
   DashboardOutlined,
   LogoutOutlined,
+  ProfileOutlined,
 } from '@ant-design/icons';
 import { useNavigate, Outlet } from 'react-router-dom';
 
@@ -21,11 +22,16 @@ const MainLayout = () => {
 
   const menuItems = [
     { key: 'dashboard', icon: <DashboardOutlined />, label: 'Dashboard' },
+    { key: 'project', icon: <ProfileOutlined />, label: 'Projects' },
   ];
 
   const onMenuClick = ({ key }: { key: string }) => {
     if (key === 'dashboard') {
       navigate('/dashboard');
+    }
+
+    if (key === 'project') {
+      navigate('/login'); // test
     }
   };
 
@@ -45,11 +51,10 @@ const MainLayout = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider width={250} trigger={null} collapsible collapsed={collapsed}>
         <div
           style={{
             height: 32,
-            margin: 16,
             background: 'rgba(255, 255, 255, 0.3)',
             color: 'white',
             textAlign: 'center',
@@ -58,7 +63,7 @@ const MainLayout = () => {
             fontSize: 18,
           }}
         >
-          {collapsed ? 'App' : 'My Application'}
+          {collapsed ? 'PM' : 'Project Management'}
         </div>
         <Menu
           theme="dark"
