@@ -1,0 +1,36 @@
+.bg-login {
+  height: 100vh;
+  background-image: url('../assets/background-login.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.login-wrapper {
+  height: 100%;
+}
+
+.card-login {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background: #bfe3f3;
+  background: linear-gradient(180deg,rgb(189, 229, 247) 0%, rgb(255, 255, 255) 51%);
+
+  .icon-box {
+    background: #f0f2f5;
+    padding: 10px;
+    border-radius: 25%;
+    display: inline-block;
+  }
+
+  .link-forgot-password {
+    color: black;
+    font-size: 12px;
+  }
+}
+
+
