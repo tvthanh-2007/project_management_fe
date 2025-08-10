@@ -1,20 +1,22 @@
+import { useNavigate } from "react-router-dom";
 import ProjectList from "../../components/project/ProjectList"
-import type { Project } from "../../interface/project"
-
-const onView = (record: Project) => {
-  console.log("View", record);
-};
-
-const onEdit = (record: Project) => {
-  console.log("Edit", record);
-};
-
-const onDelete = (record: Project) => {
-  console.log("Delete", record);
-};
-
+import type { ProjectInterface } from "../../interface/project"
 
 const ProjectListPage = () => {
+  const navigate = useNavigate();
+
+  const onView = (record: ProjectInterface) => {
+    navigate(`/projects/${record.id}`)
+  };
+
+  const onEdit = (record: ProjectInterface) => {
+    navigate(`/projects/${record.id}/edit`)
+  };
+
+  const onDelete = (record: ProjectInterface) => {
+    console.log("Delete", record);
+  };
+
   return (
     <ProjectList role="admin" onEdit={onEdit} onDelete={onDelete} onView={onView}/>
   )
