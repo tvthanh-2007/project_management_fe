@@ -1,17 +1,15 @@
 import { Card, Row, Col, Statistic } from 'antd';
-import {
-  UserOutlined,
-  ShoppingCartOutlined,
-  DollarOutlined,
-} from '@ant-design/icons';
+import { UserOutlined, ProductOutlined } from '@ant-design/icons';
+import './Dashboard.scss'
+import Title from 'antd/es/typography/Title';
 
 const Dashboard = () => {
   return (
     <div>
-      <h2>Dashboard</h2>
+      <Title level={3}>Dashboard</Title>
       <Row gutter={16}>
-        <Col span={8}>
-          <Card>
+        <Col span={12}>
+          <Card className="dashboard-card">
             <Statistic
               title="Users"
               value={1128}
@@ -19,23 +17,12 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col span={8}>
-          <Card>
+        <Col span={12}>
+          <Card className="dashboard-card">
             <Statistic
-              title="Orders"
+              title="Projects"
               value={93}
-              prefix={<ShoppingCartOutlined />}
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card>
-            <Statistic
-              title="Revenue"
-              value={112893}
-              prefix={<DollarOutlined />}
-              precision={2}
-              suffix="$"
+              prefix={<ProductOutlined />}
             />
           </Card>
         </Col>

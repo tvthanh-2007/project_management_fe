@@ -71,10 +71,31 @@ button:focus-visible {
   width: 100%;
 }
 
+.point-cursor {
+  cursor: pointer;
+}
+
 .ant-form-item-explain-error {
   text-align: left;
   font-size: 14px;
   color: red;
+}
+
+.action-icon {
+  font-size: 20px;
+  color: inherit; /* mặc định kế thừa */
+}
+
+.action-icon.edit {
+  color: blue;
+}
+
+.action-icon.delete {
+  color: red;
+}
+
+.no-padding-btn {
+  padding: 0 !important;
 }
 
 @media (prefers-color-scheme: light) {
