@@ -13,7 +13,6 @@ interface Props {
 }
 
 const ProjectList = ({ role, onEdit, onDelete, onView } : Props) => {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   let columns: any[] = [
     {
       title: "Name",
@@ -65,7 +64,6 @@ const ProjectList = ({ role, onEdit, onDelete, onView } : Props) => {
       }
     ];
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const projects: ProjectInterface[]  = [
     {

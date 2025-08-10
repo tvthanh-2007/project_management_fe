@@ -6,7 +6,6 @@ interface MemberProjectProps {
   members: MemberProjectInterface[];
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const columns: any[] = [
   {
     title: 'Members',
@@ -42,7 +41,6 @@ const columns: any[] = [
     ) ? <Tag color="orange">x</Tag> : null,
   },
 ];
-/* eslint-enable @typescript-eslint/no-explicit-any */
 
 const MemberProject = ({ members }: MemberProjectProps) => {
   return <Table rowKey="id" columns={columns} dataSource={members} pagination={false} />;

@@ -1,6 +1,11 @@
 export interface AuthState {
-  // isAuthenticated: boolean
-  token: string | null
-  refresh: string | null
-  user: { id: number, name: string } | null
+  token: string | null,
+  refresh: string | null,
+  error: any | null,
+  user: {
+    id: number,
+    name: string,
+    role: number,
+    username: string
+  } | null
 }
