@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from '../pages/login/Login'
 import ProtectedRoute from './ProtectRouter';
 import Dashboard from '../pages/Dashboard';
+import ProjectList from '../pages/project/ProjectListPage';
 import MainLayout from '../components/MainLayout';
 
 const AppRoutes = () => {
@@ -14,6 +15,7 @@ const AppRoutes = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="projects" element={<ProjectList />} />
         </Route>
       </Route>
       <Route

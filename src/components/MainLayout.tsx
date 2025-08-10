@@ -1,115 +1,67 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Layout, Menu, Dropdown, Avatar } from 'antd';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-  DashboardOutlined,
-  LogoutOutlined,
-  ProfileOutlined,
-} from '@ant-design/icons';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { UserOutlined, DashboardOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import './MainLayout.scss'
+import { Footer } from 'antd/es/layout/layout';
 
 const { Header, Sider, Content } = Layout;
+
+const menuItems = [
+  { key: 'dashboard', icon: <DashboardOutlined />, label: 'Dashboard', path: '/dashboard' },
+  { key: 'project', icon: <ProfileOutlined />, label: 'Projects', path: '/projects' },
+];
+
+const getSelectedKey = (pathname: string): string => {
+  if (pathname.startsWith('/dashboard')) return 'dashboard';
+  if (pathname.startsWith('/projects')) return 'project';
+  return 'dashboard'; // mặc định
+};
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const toggle = () => setCollapsed(!collapsed);
 
-  const toggle = () => {
-    setCollapsed(!collapsed);
-  };
-
-  const menuItems = [
-    { key: 'dashboard', icon: <DashboardOutlined />, label: 'Dashboard' },
-    { key: 'project', icon: <ProfileOutlined />, label: 'Projects' },
-  ];
+  const currentPath = location.pathname;
+  const selectedKey = getSelectedKey(currentPath);
 
   const onMenuClick = ({ key }: { key: string }) => {
-    if (key === 'dashboard') {
-      navigate('/dashboard');
-    }
-
-    if (key === 'project') {
-      navigate('/login'); // test
-    }
+    navigate(menuItems.find(i => i.key === key)?.path || "/");
   };
 
-  const userMenu = (
-    <Menu
-      onClick={({ key }) => {
-        if (key === 'logout') {
-          // handle logout logic
-          navigate('/login');
-        }
-      }}
-      items={[
-        { key: 'logout', icon: <LogoutOutlined />, label: 'Logout' },
-      ]}
-    />
-  );
+
+  const menuProfiles = [
+    { key: 'logout', icon: <LogoutOutlined />, label: 'Logout', path: "/login" },
+  ];
+
+  const menuProfileProps = {
+    items: menuProfiles,
+    onClick: ({ key }: { key: string }) => {
+      console.log(key)
+      navigate(menuProfiles.find(i => i.key === key)?.path || currentPath);
+    },
+  };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider width={250} trigger={null} collapsible collapsed={collapsed}>
-        <div
-          style={{
-            height: 32,
-            background: 'rgba(255, 255, 255, 0.3)',
-            color: 'white',
-            textAlign: 'center',
-            lineHeight: '32px',
-            fontWeight: 'bold',
-            fontSize: 18,
-          }}
-        >
-          {collapsed ? 'PM' : 'Project Management'}
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['dashboard']}
-          items={menuItems}
-          onClick={onMenuClick}
-        />
+      <Sider theme="dark" collapsible collapsed={collapsed} width={250} onCollapse={toggle}>
+        <div className="sider-title">{collapsed ? 'PM' : 'Project Management'}</div>
+        <Menu mode="inline" defaultSelectedKeys={[selectedKey]} items={menuItems} theme="dark" onClick={onMenuClick}/>
       </Sider>
       <Layout>
-        <Header
-          style={{
-            padding: 0,
-            background: '#fff',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingRight: 20,
-          }}
-        >
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: 'trigger',
-              onClick: toggle,
-              style: { paddingLeft: 20, fontSize: 18 },
-            }
-          )}
-          <Dropdown overlay={userMenu}>
-            <Avatar
-              style={{ cursor: 'pointer' }}
-              icon={<UserOutlined />}
-              size="large"
-            />
+        <Header className="header-layout" >
+          <Dropdown menu={menuProfileProps} trigger={['click']}>
+            <Avatar className="point-cursor" icon={<UserOutlined />} size="large"/>
           </Dropdown>
         </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            background: '#fff',
-            minHeight: 280,
-          }}
-        >
-          <Outlet /> {/* Nơi render các trang con như Dashboard */}
+
+        <Content className="content-layout">
+          <Outlet /> {/* renden children as Dashboard */}
         </Content>
+
+        <Footer className="footer-layout">Project Management Created by Thanh Truong</Footer>
       </Layout>
     </Layout>
   );

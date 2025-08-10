@@ -1,0 +1,29 @@
+.sider-title {
+  height: 64px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  text-align: center;
+  line-height: 64px;
+  font-weight: bold;
+  font: 18;
+}
+
+.header-layout {
+  background: #fff;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-right: 20px,
+}
+
+
+.content-layout {
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+  min-height: 280px;
+}
+
+.footer-layout {
+  text-align: center;
+}
