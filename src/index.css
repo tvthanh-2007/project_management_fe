@@ -87,7 +87,7 @@ button:focus-visible {
 }
 
 .action-icon.edit {
-  color: blue;
+  color: rgb(3, 2, 1);
 }
 
 .action-icon.delete {
@@ -96,6 +96,18 @@ button:focus-visible {
 
 .no-padding-btn {
   padding: 0 !important;
+}
+
+.bg-not-found {
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 @media (prefers-color-scheme: light) {
