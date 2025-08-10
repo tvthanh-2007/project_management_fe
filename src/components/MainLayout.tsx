@@ -1,9 +1,11 @@
+import './MainLayout.scss'
 import { useState } from 'react';
-import { Layout, Menu, Dropdown, Avatar } from 'antd';
 import { UserOutlined, DashboardOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import './MainLayout.scss'
+import { Layout, Menu, Dropdown, Avatar } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../redux/auth/selectors';
 
 const { Header, Sider, Content } = Layout;
 
@@ -19,6 +21,8 @@ const getSelectedKey = (pathname: string): string => {
 };
 
 const MainLayout = () => {
+  const user = useSelector(selectUser)
+
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,6 +56,7 @@ const MainLayout = () => {
       </Sider>
       <Layout>
         <Header className="header-layout" >
+          {user && <div className='mr-10'>{user.name}</div>}
           <Dropdown menu={menuProfileProps} trigger={['click']}>
             <Avatar className="point-cursor" icon={<UserOutlined />} size="large"/>
           </Dropdown>

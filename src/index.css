@@ -71,6 +71,11 @@ button:focus-visible {
   width: 100%;
 }
 
+.mr-10 {
+  margin-right: 10px;
+
+}
+
 .point-cursor {
   cursor: pointer;
 }

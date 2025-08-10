@@ -1,26 +1,37 @@
-import { LOGIN, LOGOUT } from './actionTypes'
+import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from './actionTypes'
 import type { AuthState } from './interface'
 
-export interface LoginAction {
+export interface LoginSuccessAction {
   type: string,
   payload: {
-    user: AuthState['user']
-    token: string
+    user: AuthState['user'],
+    token: string,
     refresh: string
   }
+}
+
+export interface LoginFailureAction {
+  type: string,
+  payload: AuthState['error']
 }
 
 export interface LogoutAction {
   type: typeof LOGOUT
 }
 
-export const login = (user: AuthState['user'], token: string, refresh: string): LoginAction => ({
-  type: LOGIN,
-  payload: { user, token, refresh },
+// export const login = (username: string, password: string): LoginAction => ()
+export const loginSuccess = (user: AuthState['user'], token: string, refresh: string): LoginSuccessAction => ({
+  type: LOGIN_SUCCESS,
+  payload: { user, token, refresh }
+})
+
+export const loginFailure = (error: AuthState['error']): LoginFailureAction => ({
+  type: LOGIN_FAILURE,
+  payload: error
 })
 
 export const logout = (): LogoutAction => ({
   type: LOGOUT,
 })
 
-export type AuthActionTypes = LoginAction | LogoutAction
+export type AuthActionTypes = LoginSuccessAction | LoginFailureAction | LogoutAction
