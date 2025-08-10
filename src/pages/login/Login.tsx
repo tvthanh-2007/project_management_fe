@@ -1,11 +1,10 @@
-import React from 'react'
 import './Login.scss'
 import { Space, Typography, Card, Flex, Form, Input, Button, Divider } from 'antd'
 import { AppleOutlined, FacebookOutlined, GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 
 const { Title, Link } = Typography
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   return (
     <div className="bg-login">
       <Flex justify="center" align="center" className="login-wrapper" vertical>
@@ -18,8 +17,8 @@ const LoginPage: React.FC = () => {
             <Title level={3}>Sign in</Title>
 
             <Form name="login" layout="vertical">
-              <Form.Item name="email" className="mb-10" rules={[{ required: true, message: 'Please input your Email!' }]}>
-                <Input prefix={<UserOutlined />} placeholder="Email" variant="filled" />
+              <Form.Item name="username" className="mb-10" rules={[{ required: true, message: 'Please input your Username!' }]}>
+                <Input prefix={<UserOutlined />} placeholder="Username" variant="filled" />
               </Form.Item>
 
               <Form.Item name="password" className="mb-10" rules={[{ required: true, message: 'Please input your Password!' }]}>
