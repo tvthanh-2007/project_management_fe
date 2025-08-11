@@ -9,13 +9,14 @@ import ProjectEditPage from '../pages/project/ProjectEditPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import JoinProjectPage from '../pages/project/JoinProjectPage';
 import Page401 from '../pages/Page401';
+import { useState } from 'react';
 
 const AppRoutes = () => {
-  const token = localStorage.getItem("token")
+  const [token, setToken] = useState(localStorage.getItem("token"))
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage setToken={setToken} />} />
       <Route element={<ProtectedRoute token={token} />}>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Navigate to="/dashboard" />} />

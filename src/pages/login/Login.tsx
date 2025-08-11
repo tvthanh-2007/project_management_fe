@@ -11,7 +11,11 @@ import { AxiosError } from 'axios';
 
 const { Title, Link } = Typography
 
-const LoginPage = () => {
+interface Props {
+  setToken: (token: string) => void
+}
+
+const LoginPage = ({ setToken }: Props) => {
   const navigate = useNavigate()
   const dispatch: Dispatch<AuthActionTypes> = useDispatch()
   const error = useSelector(selectAuthError)
@@ -24,6 +28,7 @@ const LoginPage = () => {
 
       localStorage.setItem("token", access_token)
       localStorage.setItem("refresh", refresh_token)
+      setToken(access_token)
 
       navigate('/dashboard')
       message.success("Login successfully!")

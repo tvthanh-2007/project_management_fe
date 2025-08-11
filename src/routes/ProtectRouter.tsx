@@ -5,6 +5,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ token }: ProtectedRouteProps) => {
+  debugger
   if (!token) {
     return <Navigate to="/login" replace />;
   }
