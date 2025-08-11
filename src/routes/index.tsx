@@ -8,6 +8,7 @@ import ProjectDetailPage from '../pages/project/ProjectDetailPage';
 import ProjectEditPage from '../pages/project/ProjectEditPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import JoinProjectPage from '../pages/project/JoinProjectPage';
+import Page401 from '../pages/Page401';
 
 const AppRoutes = () => {
   const token = localStorage.getItem("token")
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         <Route path="projects/:id/invitations/accept" element={<JoinProjectPage />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
+      <Route path="/401" element={<Page401 />} />
     </Routes>
   )
 }
