@@ -6,7 +6,7 @@ interface MemberProjectProps {
   members: MemberProjectInterface[];
 }
 
-const columns: any[] = [
+const columns: object[] = [
   {
     title: 'Members',
     dataIndex: 'name',

@@ -2,18 +2,25 @@ import { Button, Space, Table, Tag } from "antd";
 import { VISIBILITY_MAP } from "../../constants/project";
 import type { VisibilityKey } from "../../constants/project";
 import type { ProjectInterface } from "../../interface/project";
+import type { Role } from "../../constants/user";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-  role: string;
+  role: Role | null;
   onEdit: (record: ProjectInterface) => void;
   onDelete: (record: ProjectInterface) => void;
   onView: (record: ProjectInterface) => void;
 }
 
 const ProjectList = ({ role, onEdit, onDelete, onView } : Props) => {
-  let columns: any[] = [
+  const navigate = useNavigate()
+  if (!role) {
+    navigate('/login')
+  }
+
+  let columns: object[] = [
     {
       title: "Name",
       dataIndex: "name",
@@ -40,7 +47,8 @@ const ProjectList = ({ role, onEdit, onDelete, onView } : Props) => {
     }
   ];
 
-  if (role === "admin") {
+  // admin
+  if (role === 0) {
     columns = [
       ...columns,
       {
@@ -49,7 +57,7 @@ const ProjectList = ({ role, onEdit, onDelete, onView } : Props) => {
         key: "action",
         fixed: "right",
         width: "100px",
-        render: (_: any, record: ProjectInterface) => {
+        render: (_: number, record: ProjectInterface) => {
           return (
             <Space size="small">
               <Button type="link" className="no-padding-btn" onClick={() => onEdit(record)}>

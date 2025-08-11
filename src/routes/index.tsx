@@ -10,12 +10,12 @@ import NotFoundPage from '../pages/NotFoundPage';
 import JoinProjectPage from '../pages/project/JoinProjectPage';
 
 const AppRoutes = () => {
-  const isLoggedIn = true; // lấy trạng thái thật từ context hoặc redux
+  const token = localStorage.getItem("token")
 
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
+      <Route element={<ProtectedRoute token={token} />}>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />

@@ -7,6 +7,7 @@ import { loginApi } from '../../services/authService';
 import { loginFailure, loginSuccess, type AuthActionTypes } from '../../redux/auth/actions';
 import type { Dispatch } from 'redux';
 import { selectAuthError } from '../../redux/auth/selectors'
+import { AxiosError } from 'axios';
 
 const { Title, Link } = Typography
 
@@ -20,11 +21,19 @@ const LoginPage = () => {
       const res = await loginApi(req.username, req.password)
       const { access_token, refresh_token, user } = res.data
       dispatch(loginSuccess(user, access_token, refresh_token))
+
+      localStorage.setItem("token", access_token)
+      localStorage.setItem("refresh", refresh_token)
+
       navigate('/dashboard')
       message.success("Login successfully!")
-    } catch (error) {
-      const data = (error as any).response?.data
-      dispatch(loginFailure(data.error))
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        const data = e.response?.data as { error: string }
+        dispatch(loginFailure(data.error))
+      } else {
+        dispatch(loginFailure("Something went wrong!"))
+      }
     }
   }
 

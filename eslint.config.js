@@ -20,7 +20,7 @@ export default tseslint.config([
       globals: globals.browser,
     },
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',  // Tắt rule này
+      // '@typescript-eslint/no-explicit-any': 'off',  // Tắt rule này
     },
   },
 ])

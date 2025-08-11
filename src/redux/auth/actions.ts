@@ -2,7 +2,7 @@ import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from './actionTypes'
 import type { AuthState } from './interface'
 
 export interface LoginSuccessAction {
-  type: string,
+  type: typeof LOGIN_SUCCESS,
   payload: {
     user: AuthState['user'],
     token: string,
@@ -11,7 +11,7 @@ export interface LoginSuccessAction {
 }
 
 export interface LoginFailureAction {
-  type: string,
+  type: typeof LOGIN_FAILURE,
   payload: AuthState['error']
 }
 
