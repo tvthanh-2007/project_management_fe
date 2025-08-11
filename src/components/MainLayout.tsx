@@ -2,10 +2,13 @@ import './MainLayout.scss'
 import { useState } from 'react';
 import { UserOutlined, DashboardOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { Layout, Menu, Dropdown, Avatar } from 'antd';
+import { Layout, Menu, Dropdown, Avatar, message } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../redux/auth/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../redux/user/selectors';
+import { logoutApi } from '../services/authService';
+import { logout, type AuthActionTypes } from '../redux/auth/actions';
+import type { Dispatch } from 'redux';
 
 const { Header, Sider, Content } = Layout;
 
@@ -26,6 +29,8 @@ const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch: Dispatch<AuthActionTypes> = useDispatch()
+
   const toggle = () => setCollapsed(!collapsed);
 
   const currentPath = location.pathname;
@@ -40,11 +45,27 @@ const MainLayout = () => {
     { key: 'logout', icon: <LogoutOutlined />, label: 'Logout', path: "/login" },
   ];
 
+  const handleLogout = async () => {
+    try {
+      await logoutApi()
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh")
+      dispatch(logout())
+      navigate("/login")
+      message.success("Logout successfully!")
+    } catch (err) {
+      console.error('Logout API error:', err);
+    }
+  }
+
   const menuProfileProps = {
     items: menuProfiles,
     onClick: ({ key }: { key: string }) => {
-      console.log(key)
-      navigate(menuProfiles.find(i => i.key === key)?.path || currentPath);
+      if (key ===  'logout') {
+        handleLogout();
+      } else {
+        navigate(menuProfiles.find(i => i.key === key)?.path || currentPath);
+      }
     },
   };
 

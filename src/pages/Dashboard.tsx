@@ -1,9 +1,31 @@
-import { Card, Row, Col, Statistic } from 'antd';
-import { UserOutlined, ProductOutlined } from '@ant-design/icons';
 import './Dashboard.scss'
 import Title from 'antd/es/typography/Title';
+import { Card, Row, Col, Statistic } from 'antd';
+import { UserOutlined, ProductOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import { getProjectsApi } from '../services/projectService';
+import { getUsersApi } from '../services/userService';
 
 const Dashboard = () => {
+  const [userCount, setUserCount] = useState<number>(0);
+  const [projectCount, setProjectCount] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const projects = await getProjectsApi();
+        setProjectCount(projects.data.length);
+
+        const users = await getUsersApi();
+        setUserCount(users.data.length);
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <Title level={3}>Dashboard</Title>
@@ -12,7 +34,7 @@ const Dashboard = () => {
           <Card className="dashboard-card">
             <Statistic
               title="Users"
-              value={1128}
+              value={userCount}
               prefix={<UserOutlined />}
             />
           </Card>
@@ -21,7 +43,7 @@ const Dashboard = () => {
           <Card className="dashboard-card">
             <Statistic
               title="Projects"
-              value={93}
+              value={projectCount}
               prefix={<ProductOutlined />}
             />
           </Card>
@@ -32,3 +54,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

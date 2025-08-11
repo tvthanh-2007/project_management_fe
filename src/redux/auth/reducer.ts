@@ -6,7 +6,6 @@ const initialState: AuthState = {
   token: null,
   refresh: null,
   error: null,
-  user: null,
 }
 
 export const AuthReducer = (state = initialState, action: AuthActionTypes): AuthState => {
@@ -15,7 +14,6 @@ export const AuthReducer = (state = initialState, action: AuthActionTypes): Auth
       return {
         token: action.payload.token,
         refresh: action.payload.refresh,
-        user: action.payload.user,
         error: null
       }
     case LOGIN_FAILURE:
