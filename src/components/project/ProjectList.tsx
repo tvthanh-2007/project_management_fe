@@ -1,24 +1,31 @@
-import { Button, Space, Table, Tag } from "antd";
-import { VISIBILITY_MAP } from "../../constants/project";
 import type { VisibilityKey } from "../../constants/project";
 import type { ProjectInterface } from "../../interface/project";
 import type { Role } from "../../constants/user";
+import { Button, Space, Table, Tag } from "antd";
+import { VISIBILITY_MAP } from "../../constants/project";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import Title from "antd/es/typography/Title";
 import { useNavigate } from "react-router-dom";
+import Title from "antd/es/typography/Title";
+
+interface Project {
+  id: number,
+  name: string,
+  description: string,
+  visibility: VisibilityKey,
+  user_id: number
+}
 
 interface Props {
   role: Role | null;
+  projects: Project[]
   onEdit: (record: ProjectInterface) => void;
   onDelete: (record: ProjectInterface) => void;
   onView: (record: ProjectInterface) => void;
 }
 
-const ProjectList = ({ role, onEdit, onDelete, onView } : Props) => {
+const ProjectList = ({ role, projects, onEdit, onDelete, onView } : Props) => {
   const navigate = useNavigate()
-  if (!role) {
-    navigate('/login')
-  }
+  if (role === null) navigate('/login')
 
   let columns: object[] = [
     {
@@ -72,37 +79,6 @@ const ProjectList = ({ role, onEdit, onDelete, onView } : Props) => {
       }
     ];
   }
-
-  const projects: ProjectInterface[]  = [
-    {
-      id: 1,
-      name: "Project Alpha",
-      description: "First public project for testing",
-      visibility: 0, // Public
-      user_id: 100
-    },
-    {
-      id: 2,
-      name: "Project Beta",
-      description: "Private internal project",
-      visibility: 1, // Private
-      user_id: 100
-    },
-    {
-      id: 3,
-      name: "Project Gamma",
-      description: "Old public project that has been deleted",
-      visibility: 0,
-      user_id: 100
-    },
-    {
-      id: 4,
-      name: "Project Delta",
-      description: "Secret private project for admin eyes only",
-      visibility: 1,
-      user_id: 100
-    },
-  ];
 
   return (
     <>

@@ -20,15 +20,17 @@ const Dashboard = () => {
         const projects = await getProjectsApi();
         setProjectCount(projects.data.length);
 
-        const users = await getUsersApi();
-        setUserCount(users.data.length);
+        if (user && PERMIS_NAME[user.role] === "ADMIN") {
+          const users = await getUsersApi();
+          setUserCount(users.data.length);
+        }
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
       }
     };
 
     fetchData();
-  }, []);
+  }, [user]);
 
   return (
     <div>
