@@ -8,9 +8,14 @@ interface MemberProjectProps {
 
 const columns: object[] = [
   {
-    title: 'Members',
+    title: 'Name',
     dataIndex: 'name',
-    key: 'fullName',
+    key: 'name',
+  },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
   },
   {
     title: 'Manager',

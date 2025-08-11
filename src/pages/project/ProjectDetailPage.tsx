@@ -6,26 +6,16 @@ import type { MemberProjectInterface } from '../../interface/member_project';
 import MemberProject from '../../components/project/MemberProject';
 import { EditOutlined } from '@ant-design/icons';
 import AddMemberProject from '../../components/project/AddMemberProject';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getMemberProjectsApi, getProjectApi } from '../../services/projectService';
 
 const ProjectDetailPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [project, setProject] = useState<ProjectInterface>();
+  const [members, setMembers] = useState<MemberProjectInterface[]>([]);
+
   const navigate = useNavigate();
-  const { id } = useParams();
-
-  const project: ProjectInterface = {
-    id: id ? Number(id) : 0,
-    name: 'Project Management App',
-    description: 'A mini GitHub-like project management tool.',
-    visibility: 0,
-    user_id: 100
-  };
-
-  const joined_members: MemberProjectInterface[] = [
-    { id: 1, name: 'Nguyen Van A', email: 'manager@gmail.com', role: 0 },
-    { id: 2, name: 'Tran Thi B', email: 'member-write@gmail.com', role: 1},
-    { id: 3, name: 'Le Van C', email: 'member-read@gmail.com', role: 2 },
-  ];
+  const { project_id } = useParams();
 
   const handleAddMember = (member: { email: string; role: number }) => {
     console.log(member)
@@ -37,6 +27,22 @@ const ProjectDetailPage = () => {
     setModalVisible(false)
   }
 
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const projectRes = await getProjectApi(Number(project_id))
+        setProject(projectRes.data)
+
+        const membersRes = await getMemberProjectsApi(Number(project_id))
+        setMembers(membersRes.data)
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    }
+
+    fetchProject()
+  }, [project_id]);
+
   const items = [
     {
       key: '1',
@@ -44,12 +50,12 @@ const ProjectDetailPage = () => {
       children: (
         <>
           <Descriptions bordered column={1}>
-            <Descriptions.Item label="Name">{project.name}</Descriptions.Item>
-            <Descriptions.Item label="Description">{project.description}</Descriptions.Item>
-            <Descriptions.Item label="Visibility">{VISIBILITY_MAP[project.visibility].label}</Descriptions.Item>
+            <Descriptions.Item label="Name">{project?.name}</Descriptions.Item>
+            <Descriptions.Item label="Description">{project?.description}</Descriptions.Item>
+            <Descriptions.Item label="Visibility">{project && VISIBILITY_MAP[project?.visibility]?.label}</Descriptions.Item>
           </Descriptions>
           <Space style={{ marginTop: 16 }}>
-            <Button type="primary" onClick={() => navigate(`/projects/${id}/edit`)}>
+            <Button type="primary" onClick={() => navigate(`/projects/${project_id}/edit`)}>
               <EditOutlined/>Edit
             </Button>
             <Button onClick={() => navigate('/projects')}>Back to List</Button>
@@ -62,7 +68,7 @@ const ProjectDetailPage = () => {
       label: 'Thành viên tham gia',
       children: (
         <>
-          <MemberProject members={joined_members} />
+          <MemberProject members={members} />
           <Button style={{ marginTop: 16 }} type="primary" onClick={()=>{setModalVisible(true)}}>Add Member</Button>
           <AddMemberProject visible={modalVisible} onAdd={handleAddMember} onCancel={handleCancelModal}/>
         </>
