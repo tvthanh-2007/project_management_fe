@@ -4,7 +4,6 @@ import type { AuthState } from './interface'
 export interface LoginSuccessAction {
   type: typeof LOGIN_SUCCESS,
   payload: {
-    user: AuthState['user'],
     token: string,
     refresh: string
   }
@@ -20,9 +19,9 @@ export interface LogoutAction {
 }
 
 // export const login = (username: string, password: string): LoginAction => ()
-export const loginSuccess = (user: AuthState['user'], token: string, refresh: string): LoginSuccessAction => ({
+export const loginSuccess = (token: string, refresh: string): LoginSuccessAction => ({
   type: LOGIN_SUCCESS,
-  payload: { user, token, refresh }
+  payload: { token, refresh }
 })
 
 export const loginFailure = (error: AuthState['error']): LoginFailureAction => ({

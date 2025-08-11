@@ -1,11 +1,16 @@
 import './MainLayout.scss'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserOutlined, DashboardOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { Layout, Menu, Dropdown, Avatar } from 'antd';
+import { Layout, Menu, Dropdown, Avatar, message } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../redux/auth/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../redux/user/selectors';
+import { logoutApi } from '../services/authService';
+import { logout, type AuthActionTypes } from '../redux/auth/actions';
+import type { Dispatch } from 'redux';
+import { loadUserSuccess, type UserActionTypes } from '../redux/user/actions';
+import { getUserApi } from '../services/userService';
 
 const { Header, Sider, Content } = Layout;
 
@@ -21,11 +26,13 @@ const getSelectedKey = (pathname: string): string => {
 };
 
 const MainLayout = () => {
+  const dispatch: Dispatch<UserActionTypes | AuthActionTypes> = useDispatch()
   const user = useSelector(selectUser)
 
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
   const toggle = () => setCollapsed(!collapsed);
 
   const currentPath = location.pathname;
@@ -40,13 +47,42 @@ const MainLayout = () => {
     { key: 'logout', icon: <LogoutOutlined />, label: 'Logout', path: "/login" },
   ];
 
+  const handleLogout = async () => {
+    try {
+      await logoutApi()
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh")
+      dispatch(logout())
+      navigate("/login")
+      message.success("Logout successfully!")
+    } catch (err) {
+      console.error('Logout API error:', err);
+    }
+  }
+
   const menuProfileProps = {
     items: menuProfiles,
     onClick: ({ key }: { key: string }) => {
-      console.log(key)
-      navigate(menuProfiles.find(i => i.key === key)?.path || currentPath);
+      if (key ===  'logout') {
+        handleLogout();
+      } else {
+        navigate(menuProfiles.find(i => i.key === key)?.path || currentPath);
+      }
     },
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getUserApi();
+        dispatch(loadUserSuccess(res.data))
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+      }
+    };
+    fetchUser();
+  }, [dispatch]);
+
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

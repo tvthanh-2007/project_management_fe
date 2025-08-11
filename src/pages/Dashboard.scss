@@ -1,3 +1,9 @@
 .dashboard-card {
-  background-color: rgb(228 228 228);
+  &.users {
+    background-color: rgb(206, 88, 88);
+  }
+
+  &.projects {
+    background-color: rgb(74, 163, 179);
+  }
 }

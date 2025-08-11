@@ -19,8 +19,8 @@ const LoginPage = () => {
   const handleLogin = async (req: {username: string, password: string}) => {
     try {
       const res = await loginApi(req.username, req.password)
-      const { access_token, refresh_token, user } = res.data
-      dispatch(loginSuccess(user, access_token, refresh_token))
+      const { access_token, refresh_token } = res.data
+      dispatch(loginSuccess(access_token, refresh_token))
 
       localStorage.setItem("token", access_token)
       localStorage.setItem("refresh", refresh_token)

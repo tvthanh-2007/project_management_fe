@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import ProjectList from "../../components/project/ProjectList"
 import type { ProjectInterface } from "../../interface/project"
 import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/auth/selectors";
+import { selectUser } from "../../redux/user/selectors";
 import type { Role } from "../../constants/user";
 
 const ProjectListPage = () => {
