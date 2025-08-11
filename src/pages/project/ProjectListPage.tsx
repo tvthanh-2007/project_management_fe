@@ -3,6 +3,7 @@ import ProjectList from "../../components/project/ProjectList"
 import type { ProjectInterface } from "../../interface/project"
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/selectors";
+import type { Role } from "../../constants/user";
 
 const ProjectListPage = () => {
   const navigate = useNavigate();
@@ -19,10 +20,8 @@ const ProjectListPage = () => {
   const onDelete = (record: ProjectInterface) => {
     console.log("Delete", record);
   };
-  debugger
-
   return (
-    <ProjectList role={1} onEdit={onEdit} onDelete={onDelete} onView={onView}/>
+    <ProjectList role={user ? (user.role as Role) : null} onEdit={onEdit} onDelete={onDelete} onView={onView}/>
   )
 }
 

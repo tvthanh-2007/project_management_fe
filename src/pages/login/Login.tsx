@@ -7,6 +7,7 @@ import { loginApi } from '../../services/authService';
 import { loginFailure, loginSuccess, type AuthActionTypes } from '../../redux/auth/actions';
 import type { Dispatch } from 'redux';
 import { selectAuthError } from '../../redux/auth/selectors'
+import { AxiosError } from 'axios';
 
 const { Title, Link } = Typography
 
@@ -27,8 +28,12 @@ const LoginPage = () => {
       navigate('/dashboard')
       message.success("Login successfully!")
     } catch (e) {
-      const data = (e as any).response?.data
-      dispatch(loginFailure(data.error))
+      if (e instanceof AxiosError) {
+        const data = e.response?.data as { error: string }
+        dispatch(loginFailure(data.error))
+      } else {
+        dispatch(loginFailure("Something went wrong!"))
+      }
     }
   }
 
