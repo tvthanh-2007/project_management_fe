@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 interface ProtectedRouteProps {
-  isLoggedIn: boolean;
+  token: string | null;
 }
 
-const ProtectedRoute = ({ isLoggedIn }: ProtectedRouteProps) => {
-  if (!isLoggedIn) {
+const ProtectedRoute = ({ token }: ProtectedRouteProps) => {
+  debugger
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
   return <Outlet />; // render các route con bên trong

@@ -1,7 +1,7 @@
 export interface AuthState {
   token: string | null,
   refresh: string | null,
-  error: any | null,
+  error: string | null,
   user: {
     id: number,
     name: string,

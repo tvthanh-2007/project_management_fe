@@ -20,10 +20,14 @@ const LoginPage = () => {
       const res = await loginApi(req.username, req.password)
       const { access_token, refresh_token, user } = res.data
       dispatch(loginSuccess(user, access_token, refresh_token))
+
+      localStorage.setItem("token", access_token)
+      localStorage.setItem("refresh", refresh_token)
+
       navigate('/dashboard')
       message.success("Login successfully!")
-    } catch (error) {
-      const data = (error as any).response?.data
+    } catch (e) {
+      const data = (e as any).response?.data
       dispatch(loginFailure(data.error))
     }
   }
