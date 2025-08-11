@@ -1,5 +1,5 @@
 import './MainLayout.scss'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserOutlined, DashboardOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { Layout, Menu, Dropdown, Avatar, message } from 'antd';
@@ -9,6 +9,8 @@ import { selectUser } from '../redux/user/selectors';
 import { logoutApi } from '../services/authService';
 import { logout, type AuthActionTypes } from '../redux/auth/actions';
 import type { Dispatch } from 'redux';
+import { loadUserSuccess, type UserActionTypes } from '../redux/user/actions';
+import { getUserApi } from '../services/userService';
 
 const { Header, Sider, Content } = Layout;
 
@@ -24,12 +26,12 @@ const getSelectedKey = (pathname: string): string => {
 };
 
 const MainLayout = () => {
+  const dispatch: Dispatch<UserActionTypes | AuthActionTypes> = useDispatch()
   const user = useSelector(selectUser)
 
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch: Dispatch<AuthActionTypes> = useDispatch()
 
   const toggle = () => setCollapsed(!collapsed);
 
@@ -68,6 +70,19 @@ const MainLayout = () => {
       }
     },
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getUserApi();
+        dispatch(loadUserSuccess(res.data))
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+      }
+    };
+    fetchUser();
+  }, [dispatch]);
+
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

@@ -5,10 +5,14 @@ import { UserOutlined, ProductOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { getProjectsApi } from '../services/projectService';
 import { getUsersApi } from '../services/userService';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../redux/user/selectors';
+import { PERMIS_NAME } from '../constants/user';
 
 const Dashboard = () => {
   const [userCount, setUserCount] = useState<number>(0);
   const [projectCount, setProjectCount] = useState<number>(0);
+  const user = useSelector(selectUser)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,17 +34,22 @@ const Dashboard = () => {
     <div>
       <Title level={3}>Dashboard</Title>
       <Row gutter={16}>
+        { user && PERMIS_NAME[user.role] === "ADMIN" &&
+          (
+            <Col span={12}>
+              <Card className="dashboard-card users">
+                <Statistic
+                  title="Users"
+                  value={userCount}
+                  prefix={<UserOutlined />}
+                />
+              </Card>
+            </Col>
+          )
+        }
+
         <Col span={12}>
-          <Card className="dashboard-card">
-            <Statistic
-              title="Users"
-              value={userCount}
-              prefix={<UserOutlined />}
-            />
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card className="dashboard-card">
+          <Card className="dashboard-card projects">
             <Statistic
               title="Projects"
               value={projectCount}

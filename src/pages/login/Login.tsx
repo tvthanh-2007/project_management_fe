@@ -8,21 +8,19 @@ import { loginFailure, loginSuccess, type AuthActionTypes } from '../../redux/au
 import type { Dispatch } from 'redux';
 import { selectAuthError } from '../../redux/auth/selectors'
 import { AxiosError } from 'axios';
-import { loadUserSuccess, type UserActionTypes } from '../../redux/user/actions';
 
 const { Title, Link } = Typography
 
 const LoginPage = () => {
   const navigate = useNavigate()
-  const dispatch: Dispatch<AuthActionTypes | UserActionTypes> = useDispatch()
+  const dispatch: Dispatch<AuthActionTypes> = useDispatch()
   const error = useSelector(selectAuthError)
 
   const handleLogin = async (req: {username: string, password: string}) => {
     try {
       const res = await loginApi(req.username, req.password)
-      const { access_token, refresh_token, user } = res.data
+      const { access_token, refresh_token } = res.data
       dispatch(loginSuccess(access_token, refresh_token))
-      dispatch(loadUserSuccess(user))
 
       localStorage.setItem("token", access_token)
       localStorage.setItem("refresh", refresh_token)
