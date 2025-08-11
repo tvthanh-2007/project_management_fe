@@ -22,8 +22,8 @@ const AppRoutes = () => {
           <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="projects" element={<ProjectListPage />} />
-          <Route path="projects/:id" element={<ProjectDetailPage />} />
-          <Route path="projects/:id/edit" element={<ProjectEditPage />} />
+          <Route path="projects/:project_id" element={<ProjectDetailPage />} />
+          <Route path="projects/:project_id/edit" element={<ProjectEditPage />} />
         </Route>
 
         <Route path="projects/:id/invitations/accept" element={<JoinProjectPage />} />
