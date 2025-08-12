@@ -1,6 +1,6 @@
 import './Dashboard.scss'
 import Title from 'antd/es/typography/Title';
-import { Card, Row, Col, Statistic } from 'antd';
+import { Card, Row, Col, Statistic, message } from 'antd';
 import { UserOutlined, ProductOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { getProjectsApi } from '../services/projectService';
@@ -8,6 +8,7 @@ import { getUsersApi } from '../services/userService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../redux/user/selectors';
 import { PERMIS_NAME } from '../constants/user';
+import axios from 'axios';
 
 const Dashboard = () => {
   const [userCount, setUserCount] = useState<number>(0);
@@ -25,6 +26,11 @@ const Dashboard = () => {
           setUserCount(users.data.length);
         }
       } catch (err) {
+        if (axios.isAxiosError(err)) {
+          message.error(err.response?.data?.error || "Something went wrong");
+        } else {
+          message.error("Unexpected error");
+        }
         console.error('Error fetching dashboard data:', err);
       }
     };
