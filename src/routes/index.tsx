@@ -8,8 +8,10 @@ import ProjectDetailPage from '../pages/project/ProjectDetailPage';
 import ProjectEditPage from '../pages/project/ProjectEditPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import JoinProjectPage from '../pages/project/JoinProjectPage';
-import Page401 from '../pages/Page401';
 import { useState } from 'react';
+import Page403 from '../pages/Page403';
+import Page404 from '../pages/Page404';
+import Page500 from '../pages/Page500';
 
 const AppRoutes = () => {
   const [token, setToken] = useState(localStorage.getItem("token"))
@@ -29,7 +31,9 @@ const AppRoutes = () => {
         <Route path="projects/:id/invitations/accept" element={<JoinProjectPage />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
-      <Route path="/401" element={<Page401 />} />
+      <Route path="/403" element={<Page403 />} />
+      <Route path="/404" element={<Page404 />} />
+      <Route path="/500" element={<Page500 />} />
     </Routes>
   )
 }

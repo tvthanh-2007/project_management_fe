@@ -1,4 +1,3 @@
-import { WarningOutlined } from "@ant-design/icons";
 import { Result, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
@@ -8,9 +7,9 @@ const Page401 = () => {
   return (
     <div className="bg-not-found">
       <Result
-        icon={<WarningOutlined style={{ fontSize: 72, color: '#faad14' }} />}
-        title="401"
-        subTitle="Permission Denied"
+        status="500"
+        title="500"
+        subTitle="Internal server error"
         extra={<Button color="cyan" variant="solid" onClick={() => navigate("/")}>Back Home</Button>}
       />
     </div>
