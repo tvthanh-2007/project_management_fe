@@ -1,42 +1,43 @@
 import { Card, Form, Input, Button, Select, Space, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { VISIBILITY_MAP, type VisibilityKey } from '../../constants/project';
-import type { ProjectInterface } from '../../interface/project';
-// import type { VisibilityKey } from '../../constants/project';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectProject } from '../../redux/project/selectors';
+import { getProjectApi } from '../../services/projectService';
+import type { ProjectInterface } from '../../interface/project';
 
 const { Option } = Select;
 
 const ProjectEditPage = () => {
+  const { project_id } = useParams();
+
   const [form] = Form.useForm();
+  const [project, setProject] = useState<ProjectInterface>()
   const navigate = useNavigate();
-  const { id } = useParams();
+  const projectFromRedux = useSelector(selectProject)
 
-  const projectId = id ? Number(id) : 0;
-
-  const project: ProjectInterface = {
-    id: projectId,
-    name: 'Project Management App',
-    description: 'A mini GitHub-like project management tool.',
-    visibility: 0,
-    user_id: 100,
-  };
+  const fetchProject = async (id: number) => {
+    const projectRes = await getProjectApi(id)
+    setProject(projectRes.data)
+  }
 
   useEffect(() => {
+    if (projectFromRedux && projectFromRedux.id === Number(project_id)) setProject(projectFromRedux as ProjectInterface)
+    if (!project || project.id !== Number(project_id)) fetchProject(Number(project_id))
+
     form.setFieldsValue({
-      name: project.name,
-      description: project.description,
-      visibility: project.visibility,
+      name: project?.name,
+      description: project?.description,
+      visibility: project?.visibility,
     });
-  }, [form, project]);
+  }, [projectFromRedux, form, project, project_id]);
 
   const onFinish = (values: { name: string, description: string; visibility: VisibilityKey }) => {
     console.log('Updated values:', values);
-
+    navigate(`/projects/${project_id}`);
     message.success('Project updated successfully!');
-
-    navigate(`/projects/${projectId}`);
   };
 
   return (
@@ -80,7 +81,7 @@ const ProjectEditPage = () => {
             <Button type="primary" htmlType="submit">
               Save
             </Button>
-            <Button onClick={() => navigate(`/projects/${projectId}`)}>
+            <Button onClick={() => navigate(`/projects/${project_id}`)}>
               Cancel
             </Button>
           </Space>

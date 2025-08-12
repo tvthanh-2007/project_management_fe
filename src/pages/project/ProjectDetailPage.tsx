@@ -8,6 +8,9 @@ import { EditOutlined } from '@ant-design/icons';
 import AddMemberProject from '../../components/project/AddMemberProject';
 import { useEffect, useState } from 'react';
 import { getMemberProjectsApi, getProjectApi } from '../../services/projectService';
+import { useDispatch } from 'react-redux';
+import { loadProjectSuccess, type ProjectActionTypes } from '../../redux/project/actions';
+import type { Dispatch } from 'redux';
 
 const ProjectDetailPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,6 +19,7 @@ const ProjectDetailPage = () => {
 
   const navigate = useNavigate();
   const { project_id } = useParams();
+  const dispatch: Dispatch<ProjectActionTypes> = useDispatch();
 
   const handleAddMember = (member: { email: string; role: number }) => {
     console.log(member)
@@ -32,6 +36,7 @@ const ProjectDetailPage = () => {
       try {
         const projectRes = await getProjectApi(Number(project_id))
         setProject(projectRes.data)
+        dispatch(loadProjectSuccess(projectRes.data))
 
         const membersRes = await getMemberProjectsApi(Number(project_id))
         setMembers(membersRes.data)
@@ -41,7 +46,7 @@ const ProjectDetailPage = () => {
     }
 
     fetchProject()
-  }, [project_id]);
+  }, [project_id, dispatch]);
 
   const items = [
     {
