@@ -1,5 +1,5 @@
 import './Login.scss'
-import { Space, Typography, Card, Flex, Form, Input, Button, Divider, message, Alert } from 'antd'
+import { Space, Typography, Card, Flex, Form, Input, Button, Divider, Alert, notification } from 'antd'
 import { AppleOutlined, FacebookOutlined, GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +20,13 @@ const LoginPage = ({ setToken }: Props) => {
   const dispatch: Dispatch<AuthActionTypes> = useDispatch()
   const error = useSelector(selectAuthError)
 
+  const handleNotificate = () => {
+    notification.success({
+      message: "Login successfully!",
+      placement: "top"
+    });
+  }
+
   const handleLogin = async (req: {username: string, password: string}) => {
     try {
       const res = await loginApi(req.username, req.password)
@@ -31,7 +38,8 @@ const LoginPage = ({ setToken }: Props) => {
       setToken(access_token)
 
       navigate('/dashboard')
-      message.success("Login successfully!")
+      handleNotificate()
+      // message.success("Login successfully!")
     } catch (e) {
       if (e instanceof AxiosError) {
         const data = e.response?.data as { error: string }

@@ -84,6 +84,7 @@ button:focus-visible {
   text-align: left;
   font-size: 14px;
   color: red;
+  font-weight: lighter;
 }
 
 .action-icon {
