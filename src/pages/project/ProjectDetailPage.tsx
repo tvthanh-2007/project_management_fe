@@ -1,13 +1,13 @@
-import { Card, Descriptions, Button, Space, Tabs, message } from 'antd';
+import { Card, Descriptions, Button, Space, Tabs, message, notification } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { VISIBILITY_MAP } from '../../constants/project';
+import { VISIBILITY_MAP, type VisibilityKey } from '../../constants/project';
 import type { ProjectInterface } from '../../interface/project';
 import type { MemberProjectInterface } from '../../interface/member_project';
 import MemberProject from '../../components/project/MemberProject';
 import { EditOutlined } from '@ant-design/icons';
 import AddMemberProject from '../../components/project/AddMemberProject';
 import { useEffect, useState } from 'react';
-import { getMemberProjectsApi, getProjectApi } from '../../services/projectService';
+import { getMemberProjectsApi, getProjectApi, inviteMemberApi } from '../../services/projectService';
 import { useDispatch } from 'react-redux';
 import { loadProjectSuccess, type ProjectActionTypes } from '../../redux/project/actions';
 import type { Dispatch } from 'redux';
@@ -20,12 +20,17 @@ const ProjectDetailPage = () => {
 
   const navigate = useNavigate();
   const { project_id } = useParams();
+  const projectId = Number(project_id)
   const dispatch: Dispatch<ProjectActionTypes> = useDispatch();
 
-  const handleAddMember = (member: { email: string; role: number }) => {
-    console.log(member)
-    message.success('Send invitation successfully!');
-    setModalVisible(false);
+  const handleAddMember = async (member: { email: string; role: VisibilityKey }) => {
+    try {
+      await inviteMemberApi(projectId, member)
+      setModalVisible(false);
+      notification.success({message: 'Invite member successfully!', placement: "top"});
+    } catch (error) {
+      message.error(`Unexpected error: ${error}`);
+    }
   }
 
   const handleCancelModal = () => {
