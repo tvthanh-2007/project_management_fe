@@ -1,3 +1,4 @@
+import type { ProjectInterface } from "../interface/project";
 import instance from "../utils/axiosInstance";
 
 export const getProjectsApi = async () => {
@@ -17,6 +18,11 @@ export const getMemberProjectsApi = async (id: number) => {
 
 export const inviteMemberApi = async (id: number) => {
   const res = await instance.post(`/projects/${id}/invitations`)
+  return res.data;
+}
+
+export const updateProjectApi = async (payload: { project: ProjectInterface }) => {
+  const res = await instance.put(`/projects/${payload.project.id}`, payload)
   return res.data;
 }
 

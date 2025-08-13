@@ -11,6 +11,7 @@ import { getMemberProjectsApi, getProjectApi } from '../../services/projectServi
 import { useDispatch } from 'react-redux';
 import { loadProjectSuccess, type ProjectActionTypes } from '../../redux/project/actions';
 import type { Dispatch } from 'redux';
+import Paragraph from 'antd/es/typography/Paragraph';
 
 const ProjectDetailPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -56,7 +57,11 @@ const ProjectDetailPage = () => {
         <>
           <Descriptions bordered column={1}>
             <Descriptions.Item label="Name">{project?.name}</Descriptions.Item>
-            <Descriptions.Item label="Description">{project?.description}</Descriptions.Item>
+            <Descriptions.Item label="Description">
+              <Paragraph style={{ whiteSpace: 'pre-wrap', margin: 0 }}>
+                {project?.description}
+              </Paragraph>
+            </Descriptions.Item>
             <Descriptions.Item label="Visibility">{project && VISIBILITY_MAP[project?.visibility]?.label}</Descriptions.Item>
           </Descriptions>
           <Space style={{ marginTop: 16 }}>
