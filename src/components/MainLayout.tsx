@@ -22,7 +22,7 @@ const menuItems = [
 const getSelectedKey = (pathname: string): string => {
   if (pathname.startsWith('/dashboard')) return 'dashboard';
   if (pathname.startsWith('/projects')) return 'project';
-  return 'dashboard'; // mặc định
+  return 'dashboard';
 };
 
 const MainLayout = () => {

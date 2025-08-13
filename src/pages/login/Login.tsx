@@ -1,5 +1,5 @@
 import './Login.scss'
-import { Space, Typography, Card, Flex, Form, Input, Button, Divider, message } from 'antd'
+import { Space, Typography, Card, Flex, Form, Input, Button, Divider, message, Alert } from 'antd'
 import { AppleOutlined, FacebookOutlined, GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,7 +53,7 @@ const LoginPage = ({ setToken }: Props) => {
 
             <Title level={3}>Sign in</Title>
 
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+            { error && <Alert message={error} type="error" /> }
             <Form name="login" layout="vertical" onFinish={handleLogin}>
               <Form.Item name="username" className="mb-10" rules={[{ required: true, message: 'Please input your Username!' }]}>
                 <Input prefix={<UserOutlined />} placeholder="Username" variant="filled" />
