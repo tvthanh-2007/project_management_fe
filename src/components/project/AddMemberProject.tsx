@@ -1,11 +1,11 @@
 import { Form, Input, Select, Modal } from "antd";
-import { MEMBER_ROLE_MAP } from "../../constants/project";
+import { MEMBER_ROLE_MAP, type VisibilityKey } from "../../constants/project";
 
 const { Option } = Select;
 
 interface AddMemberProps {
   visible: boolean,
-  onAdd: (member: {email: string, role: number}) => void,
+  onAdd: (member: {email: string, role: VisibilityKey}) => void,
   onCancel: () => void
 }
 

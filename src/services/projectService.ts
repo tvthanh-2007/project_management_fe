@@ -1,3 +1,4 @@
+import type { VisibilityKey } from "../constants/project";
 import type { ProjectInterface } from "../interface/project";
 import instance from "../utils/axiosInstance";
 
@@ -16,8 +17,8 @@ export const getMemberProjectsApi = async (id: number) => {
   return res.data;
 }
 
-export const inviteMemberApi = async (id: number) => {
-  const res = await instance.post(`/projects/${id}/invitations`)
+export const inviteMemberApi = async (id: number, payload: {email: string, role: VisibilityKey}) => {
+  const res = await instance.post(`/projects/${id}/invitations`, payload)
   return res.data;
 }
 
