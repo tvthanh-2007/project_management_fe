@@ -26,17 +26,18 @@ const JoinProjectPage = () => {
 
     const joinProject = async () => {
       try {
-        await verifyInvitation(Number(project_id), {email: emailParams, token: tokenParams})
+        const { data } = await verifyInvitation(Number(project_id), {email: emailParams, token: tokenParams})
 
         setSuccess(true);
-        setMsg('You have successfully joined the project!');
+        setLoading(false);
+        setMsg(data.message);
       } catch (err) {
         console.log(err)
       }
     };
 
     joinProject();
-  }, [tokenParams, emailParams, success, project_id]);
+  }, [tokenParams, emailParams, project_id]);
 
   if (loading) return <div className="bg-not-found"><Spin spinning={loading}/></div>
 

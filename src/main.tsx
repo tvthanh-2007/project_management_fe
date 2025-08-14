@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
@@ -15,12 +14,10 @@ export const NavigationSetter = () => {
 }
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <NavigationSetter/>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </StrictMode>,
+  <BrowserRouter>
+    <NavigationSetter/>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>
 )
