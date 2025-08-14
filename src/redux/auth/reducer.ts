@@ -5,7 +5,7 @@ import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from './actionTypes'
 const initialState: AuthState = {
   token: null,
   refresh: null,
-  error: null,
+  error: null
 }
 
 export const AuthReducer = (state = initialState, action: AuthActionTypes): AuthState => {

@@ -39,7 +39,6 @@ const LoginPage = ({ setToken }: Props) => {
 
       navigate('/dashboard')
       handleNotificate()
-      // message.success("Login successfully!")
     } catch (e) {
       if (e instanceof AxiosError) {
         const data = e.response?.data as { error: string }

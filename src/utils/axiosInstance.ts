@@ -23,6 +23,12 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
+const handleRedirectError = (status: number, defaultMsg: string, err: any) => {
+  const msg = err.response?.data?.error || defaultMsg;
+  sessionStorage.setItem(`msg${status}`, msg);
+  window.location.href = `/${status}`;
+};
+
 instance.interceptors.response.use(
   (res) => res,
   (error) => {
@@ -33,21 +39,31 @@ instance.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    // token expired
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('refresh')
+    const status = error.response?.status;
 
-      if (globalNavigate) {
-        globalNavigate("/login");
-      } else {
-        window.location.href = "/login";
-      }
+    switch (status) {
+      case 401:
+        localStorage.removeItem("token");
+        localStorage.removeItem("refresh");
+
+        if (globalNavigate) {
+          globalNavigate("/login");
+        } else {
+          window.location.href = "/login";
+        }
+        break;
+      case 403:
+        handleRedirectError(403, "Forbidden", error);
+        break;
+      case 404:
+        handleRedirectError(404, "Not Found", error);
+        break;
+      case 500:
+        handleRedirectError(500, "Internal server error", error);
+        break;
+      default:
+        break;
     }
-
-    if (error.response?.status === 403) window.location.href = "/403";
-    if (error.response?.status === 404) window.location.href = "/404";
-    if (error.response?.status === 500) window.location.href = "/500";
 
     return Promise.reject(error)
   }

@@ -2,14 +2,14 @@ import './MainLayout.scss'
 import { useEffect, useState } from 'react';
 import { UserOutlined, DashboardOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { Layout, Menu, Dropdown, Avatar, message } from 'antd';
+import { Layout, Menu, Dropdown, Avatar, message, Spin } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../redux/user/selectors';
 import { logoutApi } from '../services/authService';
 import { logout, type AuthActionTypes } from '../redux/auth/actions';
 import type { Dispatch } from 'redux';
-import { loadUserSuccess, type UserActionTypes } from '../redux/user/actions';
+import { loadUserSuccess, removeUserInfo, type UserActionTypes } from '../redux/user/actions';
 import { getUserApi } from '../services/userService';
 
 const { Header, Sider, Content } = Layout;
@@ -30,6 +30,7 @@ const MainLayout = () => {
   const user = useSelector(selectUser)
 
   const [collapsed, setCollapsed] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,7 +53,10 @@ const MainLayout = () => {
       await logoutApi()
       localStorage.removeItem("token")
       localStorage.removeItem("refresh")
+
       dispatch(logout())
+      dispatch(removeUserInfo())
+
       navigate("/login")
       message.success("Logout successfully!")
     } catch (err) {
@@ -74,15 +78,20 @@ const MainLayout = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await getUserApi();
-        dispatch(loadUserSuccess(res.data))
+        if (!user) {
+          const res = await getUserApi();
+          dispatch(loadUserSuccess(res.data))
+        }
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUser();
-  }, [dispatch]);
+  }, [dispatch, user]);
 
+   if (loading) return <div className="bg-not-found"><Spin spinning={loading}/></div>
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

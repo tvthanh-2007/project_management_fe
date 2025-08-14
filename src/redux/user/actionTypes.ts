@@ -1,3 +1,3 @@
 export const SET_USER_SUCCESS = 'SET_USER_SUCCESS'
 export const SET_USER_FAIL = 'SET_USER_FAIL'
-
+export const REMOVE_USER_INFO = 'REMOVE_USER_INFO'
