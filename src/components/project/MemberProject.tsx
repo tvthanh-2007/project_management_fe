@@ -1,25 +1,18 @@
 import type { MemberProjectInterface } from '../../interface/member_project';
 import { Button, Table, Tag } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/user/selectors';
-import { PERMIS_NAME } from '../../constants/user';
 import { ROLE_NAME } from '../../constants/project';
 
-interface MemberProjectProps {
-  members: MemberProjectInterface[];
+interface Props {
+  members: MemberProjectInterface[],
+  manage: boolean
 }
 
 const handleDeleteMemberProject = () => {
   console.log("Deleting....")
 }
 
-const MemberProject = ({ members }: MemberProjectProps) => {
-  const user = useSelector(selectUser)
-
-  const isAdmin = user && PERMIS_NAME[user.role] === 'ADMIN';
-  const isManager = members.find(m => m.email === user?.email)?.role === ROLE_NAME.MANAGER;
-
+const MemberProject = ({ members, manage }: Props) => {
   let columns: object[] = [
     {
       title: 'Name',
@@ -61,7 +54,7 @@ const MemberProject = ({ members }: MemberProjectProps) => {
     },
   ];
 
-  if (isAdmin || isManager) {
+  if (manage) {
     columns = [
       ...columns,
       {
