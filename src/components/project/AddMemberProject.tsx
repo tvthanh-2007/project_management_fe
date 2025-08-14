@@ -13,7 +13,7 @@ const AddMemberProject = ({ visible, onCancel, onAdd }: AddMemberProps) => {
   const [form] = Form.useForm();
 
   return (
-    <Modal title="Add Member" visible={visible} okText="Add"
+    <Modal title="Add Member" open={visible} okText="Add"
       onOk={() => form.submit()}
       onCancel={() => {
         form.resetFields();
