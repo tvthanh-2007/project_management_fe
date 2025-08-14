@@ -9,7 +9,7 @@ import { selectUser } from '../redux/user/selectors';
 import { logoutApi } from '../services/authService';
 import { logout, type AuthActionTypes } from '../redux/auth/actions';
 import type { Dispatch } from 'redux';
-import { loadUserSuccess, type UserActionTypes } from '../redux/user/actions';
+import { loadUserSuccess, removeUserInfo, type UserActionTypes } from '../redux/user/actions';
 import { getUserApi } from '../services/userService';
 
 const { Header, Sider, Content } = Layout;
@@ -52,7 +52,10 @@ const MainLayout = () => {
       await logoutApi()
       localStorage.removeItem("token")
       localStorage.removeItem("refresh")
+
       dispatch(logout())
+      dispatch(removeUserInfo())
+
       navigate("/login")
       message.success("Logout successfully!")
     } catch (err) {
@@ -82,7 +85,6 @@ const MainLayout = () => {
     };
     fetchUser();
   }, [dispatch]);
-
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

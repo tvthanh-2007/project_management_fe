@@ -16,6 +16,8 @@ const Dashboard = () => {
   const user = useSelector(selectUser)
 
   useEffect(() => {
+    if (!user) return;
+
     const fetchData = async () => {
       try {
         const projects = await getProjectsApi();

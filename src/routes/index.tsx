@@ -28,7 +28,7 @@ const AppRoutes = () => {
           <Route path="projects/:project_id/edit" element={<ProjectEditPage />} />
         </Route>
 
-        <Route path="projects/:id/invitations/accept" element={<JoinProjectPage />} />
+        <Route path="projects/:project_id/invitations/accept" element={<JoinProjectPage />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/403" element={<Page403 />} />
