@@ -16,7 +16,7 @@ const Dashboard = () => {
   const user = useSelector(selectUser)
 
   useEffect(() => {
-    // if (!user) return;
+    if (!user) return;
 
     const fetchData = async () => {
       try {

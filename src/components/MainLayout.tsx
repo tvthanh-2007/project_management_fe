@@ -2,7 +2,7 @@ import './MainLayout.scss'
 import { useEffect, useState } from 'react';
 import { UserOutlined, DashboardOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { Layout, Menu, Dropdown, Avatar, message, Spin } from 'antd';
+import { Layout, Menu, Dropdown, Avatar, message } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../redux/user/selectors';
@@ -30,7 +30,6 @@ const MainLayout = () => {
   const user = useSelector(selectUser)
 
   const [collapsed, setCollapsed] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -78,20 +77,14 @@ const MainLayout = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        if (!user) {
-          const res = await getUserApi();
-          dispatch(loadUserSuccess(res.data))
-        }
+        const res = await getUserApi();
+        dispatch(loadUserSuccess(res.data))
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchUser();
-  }, [dispatch, user]);
-
-   if (loading) return <div className="bg-not-found"><Spin spinning={loading}/></div>
+  }, [dispatch]);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

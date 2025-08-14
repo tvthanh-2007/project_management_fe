@@ -23,11 +23,13 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const handleRedirectError = (status: number, defaultMsg: string, err: any) => {
   const msg = err.response?.data?.error || defaultMsg;
   sessionStorage.setItem(`msg${status}`, msg);
   window.location.href = `/${status}`;
 };
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 instance.interceptors.response.use(
   (res) => res,
