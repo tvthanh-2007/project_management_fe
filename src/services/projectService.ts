@@ -27,3 +27,9 @@ export const updateProjectApi = async (payload: { project: ProjectInterface }) =
   return res.data;
 }
 
+export const deleteProjectApi = async (id: number) => {
+  const res = await instance.delete(`/projects/${id}`, {})
+  return res.data;
+}
+
+

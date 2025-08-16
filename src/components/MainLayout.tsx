@@ -25,7 +25,11 @@ const getSelectedKey = (pathname: string): string => {
   return 'dashboard';
 };
 
-const MainLayout = () => {
+interface Props {
+  setToken: (token: string | null) => void
+}
+
+const MainLayout = ({ setToken }: Props) => {
   const dispatch: Dispatch<UserActionTypes | AuthActionTypes> = useDispatch()
   const user = useSelector(selectUser)
 
@@ -55,6 +59,7 @@ const MainLayout = () => {
 
       dispatch(logout())
       dispatch(removeUserInfo())
+      setToken(null)
 
       navigate("/login")
       message.success("Logout successfully!")

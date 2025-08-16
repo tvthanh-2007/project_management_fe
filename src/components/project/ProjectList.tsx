@@ -88,7 +88,7 @@ const ProjectList = ({ role, projects, onEdit, onDelete, onView } : Props) => {
         columns={columns}
         dataSource={projects}
         scroll={{ x: 768 }}
-        pagination={{ pageSize: 2 }}
+        pagination={{ pageSize: 4 }}
       />
     </>
   )
