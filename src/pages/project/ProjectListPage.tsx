@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/user/selectors";
 import type { Role } from "../../constants/user";
 import { useEffect, useState } from "react";
-import { getProjectsApi } from "../../services/projectService";
+import { deleteProjectApi, getProjectsApi } from "../../services/projectService";
+import { notification } from "antd";
 
 const ProjectListPage = () => {
-  const [projects, setProject] = useState([])
+  const [projects, setProjects] = useState<ProjectInterface[]>([])
   const navigate = useNavigate();
   const user = useSelector(selectUser)
 
@@ -20,15 +21,19 @@ const ProjectListPage = () => {
     navigate(`/projects/${record.id}/edit`)
   };
 
-  const onDelete = (record: ProjectInterface) => {
-    console.log("Delete", record);
+  const onDelete = async (record: ProjectInterface) => {
+    const newProjects = projects.filter(e => e.id !== record.id)
+    setProjects(newProjects)
+
+    const res = await deleteProjectApi(record.id)
+    notification.success({message: res.data.message, placement: "top"});
   };
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const projects = await getProjectsApi();
-        setProject(projects.data);
+        setProjects(projects.data);
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
       }

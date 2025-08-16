@@ -18,9 +18,14 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage setToken={setToken} />} />
+      {/* check token exist -> redirect to dashboard */}
+      <Route
+        path="/login"
+        element={!token ? <LoginPage setToken={setToken}/> : <Navigate to="/dashboard" />}
+      />
       <Route element={<ProtectedRoute token={token} />}>
-        <Route path="/" element={<MainLayout />}>
+        {/* Master layout */}
+        <Route path="/" element={<MainLayout setToken={setToken} />}>
           <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="projects" element={<ProjectListPage />} />

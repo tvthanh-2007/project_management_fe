@@ -1,19 +1,20 @@
-import { Card, Descriptions, Button, Space, Tabs, message, notification } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ROLE_NAME, VISIBILITY_MAP, type VisibilityKey } from '../../constants/project';
+import type { Dispatch } from 'redux';
 import type { ProjectInterface } from '../../interface/project';
 import type { MemberProjectInterface } from '../../interface/member_project';
-import MemberProject from '../../components/project/MemberProject';
+import { Card, Descriptions, Button, Space, Tabs, message, notification, Typography } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ROLE_NAME, VISIBILITY_MAP, type VisibilityKey } from '../../constants/project';
 import { EditOutlined } from '@ant-design/icons';
-import AddMemberProject from '../../components/project/AddMemberProject';
 import { useEffect, useMemo, useState } from 'react';
-import { getMemberProjectsApi, getProjectApi, inviteMemberApi } from '../../services/projectService';
+import { deleteProjectApi, getMemberProjectsApi, getProjectApi, inviteMemberApi } from '../../services/projectService';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadProjectSuccess, type ProjectActionTypes } from '../../redux/project/actions';
-import type { Dispatch } from 'redux';
-import Paragraph from 'antd/es/typography/Paragraph';
 import { selectUser } from '../../redux/user/selectors';
 import { PERMIS_NAME } from '../../constants/user';
+import MemberProject from '../../components/project/MemberProject';
+import AddMemberProject from '../../components/project/AddMemberProject';
+
+const { Paragraph } = Typography
 
 const ProjectDetailPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,12 +28,15 @@ const ProjectDetailPage = () => {
   const projectId = Number(project_id)
   const dispatch: Dispatch<ProjectActionTypes> = useDispatch();
 
-  const { isAdmin, isManager } = useMemo(() => {
+  const { isAdmin, isManager, isWriter, isOwner } = useMemo(() => {
     console.log("calculating.....")
     const admin = user && PERMIS_NAME[user.role] === 'ADMIN';
     const manager = members.some(m => m.email === user?.email && m.role === ROLE_NAME.MANAGER);
-    return { isAdmin: admin, isManager: manager };
-  }, [members, user]);
+    const writer = members.some(m => m.email === user?.email && m.role === ROLE_NAME.WRITE);
+    const owner = user && user.id === project?.user_id
+
+    return { isAdmin: admin, isManager: manager, isWriter: writer, isOwner: owner};
+  }, [members, user, project]);
 
   const handleAddMember = async (member: { email: string; role: VisibilityKey }) => {
     try {
@@ -45,6 +49,12 @@ const ProjectDetailPage = () => {
   }
 
   const handleCancelModal = () => setModalVisible(false)
+
+  const onDelete = async () => {
+    const res = await deleteProjectApi(projectId)
+    navigate("/projects")
+    notification.success({message: res.data.message, placement: "top"});
+  }
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -63,10 +73,10 @@ const ProjectDetailPage = () => {
     fetchProject()
   }, [project_id, dispatch]);
 
-  const items = [
+  let items = [
     {
       key: '1',
-      label: 'Thông tin dự án',
+      label: 'Project information',
       children: (
         <>
           <Descriptions bordered column={1}>
@@ -79,7 +89,7 @@ const ProjectDetailPage = () => {
             <Descriptions.Item label="Visibility">{project && VISIBILITY_MAP[project?.visibility]?.label}</Descriptions.Item>
           </Descriptions>
           <Space style={{ marginTop: 16 }}>
-            {(isAdmin || isManager) && (
+            {(isAdmin || isManager || isWriter) && (
               <Button type="primary" onClick={() => navigate(`/projects/${project_id}/edit`)}>
                 <EditOutlined/>Edit
               </Button>
@@ -91,7 +101,7 @@ const ProjectDetailPage = () => {
     },
     {
       key: '2',
-      label: 'Thành viên tham gia',
+      label: 'Participating members',
       children: (
         <>
           <MemberProject members={members} manage={isAdmin || isManager} />
@@ -105,6 +115,19 @@ const ProjectDetailPage = () => {
       )
     },
   ];
+
+  if (isOwner) {
+    items = [
+      ...items,
+      {
+        key: '3',
+        label: 'Setting',
+        children: (
+          <Button style={{ marginTop: 16 }} type="primary" danger onClick={onDelete}>Delete Project</Button>
+        )
+      },
+    ]
+  }
 
   return (
     <Card title="Project Details" variant="borderless">
