@@ -12,6 +12,7 @@ import { useState } from 'react';
 import Page403 from '../pages/Page403';
 import Page404 from '../pages/Page404';
 import Page500 from '../pages/Page500';
+import ProjectCreatePage from '../pages/project/ProjectCreatePage';
 
 const AppRoutes = () => {
   const [token, setToken] = useState(localStorage.getItem("token"))
@@ -29,6 +30,7 @@ const AppRoutes = () => {
           <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="projects" element={<ProjectListPage />} />
+          <Route path="projects/new" element={<ProjectCreatePage />} />
           <Route path="projects/:project_id" element={<ProjectDetailPage />} />
           <Route path="projects/:project_id/edit" element={<ProjectEditPage />} />
         </Route>

@@ -83,6 +83,10 @@ const ProjectList = ({ role, projects, onEdit, onDelete, onView } : Props) => {
   return (
     <>
       <Title level={3}>Projects</Title>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
+        <Button style={{ marginTop: 16 }} type="primary" onClick={() => navigate("/projects/new")}>Add New Project</Button>
+      </div>
+
       <Table
         rowKey="id"
         columns={columns}
