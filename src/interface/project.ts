@@ -7,3 +7,9 @@ export interface ProjectInterface {
   visibility: VisibilityKey; // 0 | 1
   user_id: number;
 }
+
+export interface CreateProjectPayload {
+  name: string
+  description: string
+  visibility: VisibilityKey
+}

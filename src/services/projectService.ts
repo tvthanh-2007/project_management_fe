@@ -1,5 +1,5 @@
 import type { VisibilityKey } from "../constants/project";
-import type { ProjectInterface } from "../interface/project";
+import type { CreateProjectPayload, ProjectInterface } from "../interface/project";
 import instance from "../utils/axiosInstance";
 
 export const getProjectsApi = async () => {
@@ -32,4 +32,7 @@ export const deleteProjectApi = async (id: number) => {
   return res.data;
 }
 
-
+export const createProjectApi = async (payload: { project: CreateProjectPayload }) => {
+  const res = await instance.post(`/projects`, payload)
+  return res.data;
+}
